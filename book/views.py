@@ -42,18 +42,23 @@ class BookView(View):
         books = BookInfo.objects.all()
         # [BookInfo,BOokInfo,]
 
-        # 2.将对象列表转换为字典列表
-        lists = []
-        for book in books:
-            lists.append({
-                'id': book.id,
-                'name': book.name,
-                'pub_date': book.pub_date,
-                'readcount': book.readcount
-            })
+        # # 2.将对象列表转换为字典列表
+        # lists = []
+        # for book in books:
+        #     lists.append({
+        #         'id': book.id,
+        #         'name': book.name,
+        #         'pub_date': book.pub_date,
+        #         'readcount': book.readcount
+        #     })
+        #
+        # # 3.返回响应
+        # return JsonResponse(lists, safe=False)
 
-        # 3.返回响应
-        return JsonResponse(lists, safe=False)
+        # 使用序列化器(等价与上面 2.将对象列表转换为字典列表&3.返回响应 的代码)
+        serializer = BookInfoSerializer(books,many=True)
+
+        return JsonResponse(serializer.data,safe=False)
 
     # 新增书籍
     def post(self, request):
@@ -180,9 +185,11 @@ from book.serializers import BookInfoSerializer
 
 # 1.获取对象
 book = BookInfo.objects.get(id=1)
+
 # 2.创建序列化器(序列化器可以将对象 转换为 字典)
-# 序列化器的 第一个参数是： instance 实例对象
+# 序列化器的 第一个参数是： instance 实例对象，下面2行代码等价
 serializer = BookInfoSerializer(instance=book)
+# serializer = BookInfoSerializer(book)
 
 # 3.获取字典数据,终端中回车后便可得到结果
 serializer.data
@@ -206,5 +213,32 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> # 3.获取字典数据
 >>> serializer.data
 {'readcount': 12, 'id': 1, 'name': '射雕英雄后传', 'is_delete': False, 'commentcount': 34, 'pub_date': '1980-05-01'}
+
+"""
+
+####################################对象列表##########################################
+from book.models import BookInfo
+from book.serializers import BookInfoSerializer
+
+#1. 获取对象列表
+books = BookInfo.objects.all()
+
+# 2.创建序列化器
+# 如果要被序列化的是包含多条数据的查询集QuerySet，可以通过添加many=True参数补充说明
+serializer = BookInfoSerializer(books,many=True)
+
+#3. 获取转换之后的字典
+serializer.data
+
+# 之后便可以使用 JsonResponse(serializer.data)，返回json
+
+"""
+Ordered     Dict  本质是字典,只不过这个字典有顺序,结果如下：
+[
+OrderedDict([('id', 1), ('name', '射雕英雄后传'), ('pub_date', '1980-05-01'), ('readcount', 12), ('commentcount', 34), elete', False)]),
+OrderedDict([('id', 2), ('name', '天龙八部'), ('pub_date', '1986-07-24'), ('readcount', 36), ('commentt', 40), ('is_delete', False)]),
+OrderedDict([('id', 3), ('name', '笑傲江湖'), ('pub_date', '1995-12-24'), ('readcount',, ('commentcount', 80), ('is_delete', False)]),
+OrderedDict([('id', 4), ('name', '雪山飞狐'), ('pub_date', '1987-11-11')readcount', 58), ('commentcount', 24), ('is_delete', False)])
+]
 
 """
