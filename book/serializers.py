@@ -46,6 +46,11 @@ class BookInfoSerializer(serializers.Serializer):
     commentcount = serializers.IntegerField()
     is_delete = serializers.BooleanField()
 
+    # 1本书对应多个人物 ,我们就是要获取人物的信息,不能修改，read_only=True
+    #
+    # peopleinfo_set = serializers.PrimaryKeyRelatedField(read_only=True)  # 缺少 many=True
+    peopleinfo_set = serializers.PrimaryKeyRelatedField(read_only=True,many=True)
+
     # 少写一个
     # image = serializers.ImageField()
 
