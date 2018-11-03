@@ -65,7 +65,7 @@ class BookView(View):
         """
         # 1.接收数据
         body = request.body
-        body_str = body.decode()
+        body_str = body.decode()  # 解码成json类型的字符串
         params = json.loads(body_str)  # 将字符串转换为字典
 
         # 2.校验数据(校验省略)
@@ -157,3 +157,15 @@ class BookDetailView(View):
 
         # 3.返回响应
         return HttpResponse(status=204)  # NO CONTENT - [DELETE]：用户删除数据成功。
+
+"""
+    JSON --> 模型(对象)             :反序列化
+    模型(对象) --> JSON(字典)         :序列化
+"""
+from  rest_framework.viewsets import ModelViewSet
+from .serializers import BookModelSerializer
+class BookModelViewSet(ModelViewSet):
+
+    serializer_class = BookModelSerializer
+
+    queryset = BookInfo.objects.all()

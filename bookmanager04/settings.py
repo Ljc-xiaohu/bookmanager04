@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'book.apps.BookConfig',
+    'rest_framework',  # 使用DRF（Django REST framework,全称djangorestful-framework） 必须注册
 ]
 
 MIDDLEWARE = [
