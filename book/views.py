@@ -315,7 +315,8 @@ data = {
     'name':'python',
     'pub_date':'2000-1-1',
     # 'pub_date':'20',
-    'readcount':10,
+    'readcount':-1,
+    # 'readcount':10,
     'commentcount':10,
     'is_delete':0
 }

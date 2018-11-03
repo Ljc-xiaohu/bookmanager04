@@ -42,7 +42,8 @@ class BookInfoSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True,label='id')  # label 表示注释
     name = serializers.CharField(max_length=20,label='名字',required=True)
     pub_date = serializers.DateField(label='发布日期',required=True)
-    readcount = serializers.IntegerField(label='阅读量',required=False,default=1)
+    # 其中required=True时,不能设置default的值
+    readcount = serializers.IntegerField(label='阅读量',required=True)
     commentcount = serializers.IntegerField(required=False)
     is_delete = serializers.BooleanField(required=False,default=False)
 
@@ -53,6 +54,15 @@ class BookInfoSerializer(serializers.Serializer):
 
     # 少写一个
     # image = serializers.ImageField()
+
+    # 对应views中的第三种方式
+    def validate_readcount(self, value):
+
+        if value < 0:
+            raise serializers.ValidationError('阅读量不能为负数')
+
+        # 验证完成之后,需要将 value返回
+        return value
 
 
 class PeopleInfoSerializer(serializers.Serializer):
