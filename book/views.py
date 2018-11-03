@@ -235,10 +235,35 @@ serializer.data
 """
 Ordered     Dict  本质是字典,只不过这个字典有顺序,结果如下：
 [
-OrderedDict([('id', 1), ('name', '射雕英雄后传'), ('pub_date', '1980-05-01'), ('readcount', 12), ('commentcount', 34), elete', False)]),
+OrderedDict([('id', 1), ('name', '射雕英雄后传'), ('pub_date', '1980-05-01'), ('readcount', 12), ('commentcount', 34), ('is_delete', False)]),
 OrderedDict([('id', 2), ('name', '天龙八部'), ('pub_date', '1986-07-24'), ('readcount', 36), ('commentt', 40), ('is_delete', False)]),
 OrderedDict([('id', 3), ('name', '笑傲江湖'), ('pub_date', '1995-12-24'), ('readcount',, ('commentcount', 80), ('is_delete', False)]),
 OrderedDict([('id', 4), ('name', '雪山飞狐'), ('pub_date', '1987-11-11')readcount', 58), ('commentcount', 24), ('is_delete', False)])
 ]
 
+"""
+
+
+####################################外键##########################################
+
+from book.models import PeopleInfo
+from book.serializers import PeopleInfoSerializer
+
+#1.获取对象
+person = PeopleInfo.objects.get(id=1)
+
+#2.创建序列化器
+serializer = PeopleInfoSerializer(person)
+
+#3.获取字典
+serializer.data
+
+"""
+{
+'book': OrderedDict([('id', 1), ('name', '射雕英雄后传'), ('pub_date', '1980-05-01'), ('readcount', 12), ('commentcount', 34), ('is_delete', False)]),
+'id': 1,
+'description': '降龙十八掌',
+'gender': 1,
+'name': '郭靖'
+}
 """
