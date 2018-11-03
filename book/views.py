@@ -267,3 +267,71 @@ serializer.data
 'name': '郭靖'
 }
 """
+
+
+####################################反序列化(JSON,字典 转换为 对象(模型))  数据的校验#########################################
+
+"""
+数据的校验有5中形式:
+
+第一种验证:
+    我们的字段的类型 进行校验,我们传递的数据的类型,必须满足 字段的类型要求
+
+第二种验证:
+    字段选项:
+        max_length: 字符串的最大长度        char
+        min_length: 字符串的最小长度
+        max_value:     最大值                 int
+        min_value:      最小值
+        required	表明该字段在反序列化时必须输入，默认True
+        default     默认值
+
+第三种方式: 当我们的类型和选项都满足条件之后,我们需要对单个字段的值进行校验,我们在序列化器中实现方法
+        以 validate_ 开头 以 字段名结尾的函数
+
+        def validate_fieldsname(self,value):
+
+            return value
+
+
+第四种方式:
+    对多个字段进行校验的时候,我们在序列器中实现
+    def validate(self,attrs)
+
+        return attrs
+
+第五种方式:
+    自定义验证器
+
+
+"""
+
+####################################反序列化(JSON,字典 转换为 对象(模型))  数据的入库#########################################
+
+from book.serializers import BookInfoSerializer
+
+# 1.接收数据
+data = {
+    'name':'python',
+    # 'pub_date':'2000-1-1',
+    'pub_date':'20',
+    'readcount':10,
+    'commentcount':10,
+    'is_delete':0
+}
+
+# 2.对数据进行校验 -- > 序列化器 : 创建序列化器
+# Serializer 的第一个参数是: instance  对象
+# Serializer 的第二个参数是: data       要校验(入库)的数据
+serializer = BookInfoSerializer(data=data)
+
+#需要调用序列化器的 is_valid方法进行校验
+# 如果数据没有问题,则返回True
+# 如果数据有问题,则返回False
+# serializer.is_valid()
+
+# serializer.is_valid()
+# raise_exception 如果有错误则抛出异常
+serializer.is_valid(raise_exception=True)
+
+#3. 入库
