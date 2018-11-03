@@ -316,7 +316,7 @@ data = {
     'pub_date':'2000-1-1',
     # 'pub_date':'20',
     # 'readcount':-1,
-    'readcount':10,
+    'readcount':10000,
     'commentcount':100,
     'is_delete':0
 }

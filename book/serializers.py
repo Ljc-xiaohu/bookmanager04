@@ -39,8 +39,16 @@ class BookInfoSerializer(serializers.Serializer):
     3.选项:
         read_only = True 表示只读
     """
+
+    # 第五种方式:自定义验证器,custom_validate,自定义的名字
+    def custom_validate(self):
+        # if self == 'admin':
+        #     raise serializers.ValidationError('admin不可用')
+        raise serializers.ValidationError('我就是来捣乱的')
+
     id = serializers.IntegerField(read_only=True,label='id')  # label 表示注释
-    name = serializers.CharField(max_length=20,label='名字',required=True)
+    name = serializers.CharField(max_length=20,label='名字',required=True,validators=[custom_validate])
+    # name = serializers.CharField(max_length=20,label='名字',required=True)
     pub_date = serializers.DateField(label='发布日期',required=True)
     # 其中required=True时,不能设置default的值
     readcount = serializers.IntegerField(label='阅读量',required=True)
