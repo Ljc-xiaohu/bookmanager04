@@ -64,6 +64,29 @@ class BookInfoSerializer(serializers.Serializer):
         # 验证完成之后,需要将 value返回
         return value
 
+    # 下面2行代码等价
+    # def validate(self, attrs):
+    def validate(self, data):
+        # attrs = data
+        # params --> 序列化器data --> attrs
+        """
+        data = {
+            'name':'python',
+            'pub_date':'2000-1-1',
+            'readcount':10,
+            'commentcount':100
+        }
+        """
+        readcount = data.get('readcount')
+        # if readcount<0:
+        #     raise serializers.ValidationError()
+        commentcount = data.get('commentcount')
+        if readcount < commentcount:
+            raise serializers.ValidationError('评论量不能大于阅读量')
+
+        #校验完成之后,必须要将数据返回回去
+        return data
+
 
 class PeopleInfoSerializer(serializers.Serializer):
     """英雄数据序列化器"""

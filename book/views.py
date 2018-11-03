@@ -315,9 +315,9 @@ data = {
     'name':'python',
     'pub_date':'2000-1-1',
     # 'pub_date':'20',
-    'readcount':-1,
-    # 'readcount':10,
-    'commentcount':10,
+    # 'readcount':-1,
+    'readcount':10,
+    'commentcount':100,
     'is_delete':0
 }
 
@@ -336,3 +336,44 @@ serializer = BookInfoSerializer(data=data)
 serializer.is_valid(raise_exception=True)
 
 #3. 入库
+
+
+"""
+结果如下：
+(django_py3_1.11) python@ubuntu:~/PycharmProjects/Django code/bookmanager04$ python manage.py shell
+Python 3.5.2 (default, Nov 23 2017, 16:37:01)
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from book.serializers import BookInfoSerializer
+>>>
+>>> # 1.接收数据
+>>> data = {
+...     'name':'python',
+...     'pub_date':'2000-1-1',
+...     # 'pub_date':'20',
+...     # 'readcount':-1,
+...     'readcount':10,
+...     'commentcount':100,
+...     'is_delete':0
+... }
+>>>
+>>> # 2.对数据进行校验 -- > 序列化器 : 创建序列化器
+>>> # Serializer 的第一个参数是: instance  对象
+>>> # Serializer 的第二个参数是: data       要校验(入库)的数据
+>>> serializer = BookInfoSerializer(data=data)
+>>>
+>>> #需要调用序列化器的 is_valid方法进行校验
+>>> # 如果数据没有问题,则返回True
+>>> # 如果数据有问题,则返回False
+>>> # serializer.is_valid()
+>>>
+>>> # serializer.is_valid()
+>>> # raise_exception 如果有错误则抛出异常
+>>> serializer.is_valid(raise_exception=True)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "/home/python/.virtualenvs/django_py3_1.11/lib/python3.5/site-packages/rest_framework/serializers.py", line 244, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(string='评论量不能大于阅读量', code='invalid')]}
+"""
