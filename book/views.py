@@ -313,8 +313,8 @@ from book.serializers import BookInfoSerializer
 # 1.接收数据
 data = {
     'name':'python',
-    # 'pub_date':'2000-1-1',
-    'pub_date':'20',
+    'pub_date':'2000-1-1',
+    # 'pub_date':'20',
     'readcount':10,
     'commentcount':10,
     'is_delete':0

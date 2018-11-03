@@ -40,11 +40,11 @@ class BookInfoSerializer(serializers.Serializer):
         read_only = True 表示只读
     """
     id = serializers.IntegerField(read_only=True,label='id')  # label 表示注释
-    name = serializers.CharField(max_length=20,label='名字')
-    pub_date = serializers.DateField(label='发布日期')
-    readcount = serializers.IntegerField(label='阅读量')
-    commentcount = serializers.IntegerField()
-    is_delete = serializers.BooleanField()
+    name = serializers.CharField(max_length=20,label='名字',required=True)
+    pub_date = serializers.DateField(label='发布日期',required=True)
+    readcount = serializers.IntegerField(label='阅读量',required=False,default=1)
+    commentcount = serializers.IntegerField(required=False)
+    is_delete = serializers.BooleanField(required=False,default=False)
 
     # 1本书对应多个人物 ,我们就是要获取人物的信息,不能修改，read_only=True
     #
