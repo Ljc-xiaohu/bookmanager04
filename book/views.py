@@ -158,14 +158,53 @@ class BookDetailView(View):
         # 3.返回响应
         return HttpResponse(status=204)  # NO CONTENT - [DELETE]：用户删除数据成功。
 
+
 """
     JSON --> 模型(对象)             :反序列化
     模型(对象) --> JSON(字典)         :序列化
 """
 from  rest_framework.viewsets import ModelViewSet
 from .serializers import BookModelSerializer
-class BookModelViewSet(ModelViewSet):
 
+
+class BookModelViewSet(ModelViewSet):
     serializer_class = BookModelSerializer
 
     queryset = BookInfo.objects.all()
+
+
+############################## 序列化器 ################################
+
+from book.models import BookInfo
+from book.serializers import BookInfoSerializer
+
+# 1.获取对象
+book = BookInfo.objects.get(id=1)
+# 2.创建序列化器(序列化器可以将对象 转换为 字典)
+# 序列化器的 第一个参数是： instance 实例对象
+serializer = BookInfoSerializer(instance=book)
+
+# 3.获取字典数据,终端中回车后便可得到结果
+serializer.data
+
+"""
+终端运行结果：
+(django_py3_1.11) python@ubuntu:~/PycharmProjects/Django code/bookmanager04$ python manage.py shell
+Python 3.5.2 (default, Nov 23 2017, 16:37:01)
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from book.models import BookInfo
+>>> from book.serializers import BookInfoSerializer
+>>>
+>>> # 1.获取对象
+>>> book = BookInfo.objects.get(id=1)
+>>> # 2.创建序列化器(序列化器可以将对象 转换为 字典)
+>>> # 序列化器的 第一个参数是： instance 实例对象
+>>> serializer = BookInfoSerializer(instance=book)
+>>>
+>>> # 3.获取字典数据
+>>> serializer.data
+{'readcount': 12, 'id': 1, 'name': '射雕英雄后传', 'is_delete': False, 'commentcount': 34, 'pub_date': '1980-05-01'}
+
+"""
