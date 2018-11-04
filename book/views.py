@@ -450,3 +450,32 @@ serializer.save(owner=request.user)
 serializer = BookInfoSerializer(instance=book, data={'pub_date': '2999-1-1'}, partial=True)
 
 """
+
+
+####################################ModelSerialzier#########################################
+
+
+from book.serializers import BookModelSerializer
+from book.models import BookInfo
+# 将对象转换为字典
+book = BookInfo.objects.get(id=1)
+# 将字典 进行验证,之后保存入库
+
+s = BookModelSerializer(book)
+
+s.data
+
+
+data = {
+    'name':'听说下雨天吃巧克力更配哦',
+    'pub_date':'2010-1-1',
+    'readcount':100399,
+    'commentcount':666
+}
+
+s = BookModelSerializer(data=data)
+
+s.is_valid()
+# 保存前 必须调用 is_valid() 方法
+s.save()
+

@@ -3,11 +3,76 @@ from rest_framework import serializers
 # 将模型转换为JOSN, 将JSON转换Wie对象(模型),验证
 from book.models import BookInfo
 
+# ModelSerializer
+#               1.自动帮我们生成 序列化器字段
+#               2.自动实现了 update方法和create方法
 
 class BookModelSerializer(serializers.ModelSerializer):
     class Meta:
+        #我们必须要关联模型
         model = BookInfo
-        fields = '__all__'
+        # 设置哪些字段可以生成 序列化器字段
+        # fields = '__all__'      # __all__ 表示模型的所有字段
+        # fields = ['id','name','pub_date']      # 设置部分字段
+
+        exclude = ['image', 'is_delete']  # 抛出列表所罗列的,剩余的字段
+
+        """
+        {
+        'id': 1,
+        'pub_date': '2010-01-01',
+        'name': '射雕英雄前传0--之缅怀金庸',
+        'commentcount': 666,
+        'readcount': 100399
+        }
+        """
+
+        """
+        ModelSerializer与常规的Serializer相同，但提供了：
+
+        基于模型类自动生成一系列字段
+
+        包含默认的create()和update()的实现
+        """
+
+        """
+        基于模型类自动生成一系列字段:
+        >>> s
+        BookModelSerializer(data={'name': '听说下雨天吃巧克力更配哦', 'pub_date': '2010-1-1', 'readcount': 100399, 'commentcount': 666}):
+            id = IntegerField(label='ID', read_only=True)
+            name = CharField(label='名称', max_length=20)
+            pub_date = DateField(allow_null=True, label='发布日期', required=False)
+            readcount = IntegerField(label='阅读量', max_value=2147483647, min_value=-2147483648, required=False)
+            commentcount = IntegerField(label='评论量', max_value=2147483647, min_value=-2147483648, required=False)
+
+        """
+
+        # 可以通过read_only_fields指明只读字段，即仅用于序列化输出的字段
+        read_only_fields = ['readcount', 'commentcount']
+
+        # 我们可以使用extra_kwargs参数为ModelSerializer添加或修改原有的选项参数
+        # 修改 默认生成在 字段的选项
+        extra_kwargs = {
+            #  '字段名':{'选项名':值}
+            'pub_date': {'required': True},
+            'readcount': {
+                'max_value': 100,
+                'min_value': 1
+            }
+        }
+
+        """
+        使用read_only_fields和extra_kwargs方法之后：
+        >>> s
+        BookModelSerializer(data={'readcount': 100399, 'pub_date': '2010-1-1', 'name': '听说下雨天吃巧克力更配哦', 'commentcount': 666}):
+            id = IntegerField(label='ID', read_only=True)
+            name = CharField(label='名称', max_length=20)
+            pub_date = DateField(allow_null=True, label='发布日期', required=True)
+            readcount = IntegerField(label='阅读量', max_value=100, min_value=1, read_only=True)
+            commentcount = IntegerField(label='评论量', read_only=True)
+        >>>
+
+        """
 
 
 # DRF魅力的时候 我们所做的
