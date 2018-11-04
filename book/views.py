@@ -394,3 +394,43 @@ from book.serializers import BookInfoSerializer,
 BookInfoSerializer的父类便是serializers.Serializer)
 
 """
+
+####################################反序列化(JSON,字典 转换为 对象(模型))  数据的更新#########################################
+
+
+from book.serializers import BookInfoSerializer
+from book.models import BookInfo
+
+book = BookInfo.objects.get(id=1)
+
+# 1.接收数据
+data = {
+    'name':'射雕英雄前传0--之缅怀金庸',
+    'pub_date':'2010-1-1',
+    'readcount':100399,
+    'commentcount':666
+}
+
+# 序列化器 有2个参数:
+# 第一个参数是: instance      对象
+# 第二个参数是: data          校验的数据
+# 如果我们传递了 instance 和 data 2个数据,则系统认为我们在进行 更新操作
+serializer = BookInfoSerializer(instance=book,data=data)
+
+# 调用save之前 ,必须调用 is_valid
+serializer.is_valid(raise_exception=True)
+
+# 保存(更新)一下 都是调用 save方法
+serializer.save()
+
+"""
+
+出现这个错误：
+NotImplementedError: `update()` must be implemented.
+
+原因在于：
+serializer.save() 继承自serializers.Serializer的序列化器，
+在进行更新操作，调用save方法的时候，
+需要手动实现update方法。
+
+"""

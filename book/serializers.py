@@ -120,6 +120,21 @@ class BookInfoSerializer(serializers.Serializer):
         # 需要将创建的对象 返回
         return book
 
+    def update(self, instance, validated_data):
+        # instance,          传递过来的对象
+        # validated_data    验证之后的数据
+
+        instance.name = validated_data.get('name',instance.name)
+        instance.pub_date = validated_data.get('pub_date',instance.pub_date)
+        instance.readcount = validated_data.get('readcount',instance.readcount)
+        instance.commentcount = validated_data.get('commentcount',instance.commentcount)
+
+        # 对实例对象进行保存
+        instance.save()
+
+        #最终要返回对象
+        return instance
+
 
 class PeopleInfoSerializer(serializers.Serializer):
     """英雄数据序列化器"""
