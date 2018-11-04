@@ -434,3 +434,19 @@ serializer.save() 继承自serializers.Serializer的序列化器，
 需要手动实现update方法。
 
 """
+"""
+create方法和update方法对比：
+如果创建序列化器对象的时候，没有传递instance实例，则调用save()方法的时候，create()被调用，
+相反，
+如果传递了instance实例，则调用save()方法的时候，update()被调用。
+
+另外
+两点说明：
+1） 在对序列化器进行save()保存时，可以额外传递数据，这些数据可以在create()和update()中的validated_data参数获取到
+
+serializer.save(owner=request.user)
+2）默认序列化器必须传递所有required的字段，否则会抛出验证异常。但是我们可以使用partial参数来允许部分字段更新
+
+serializer = BookInfoSerializer(instance=book, data={'pub_date': '2999-1-1'}, partial=True)
+
+"""
