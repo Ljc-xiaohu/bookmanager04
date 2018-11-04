@@ -12,10 +12,10 @@ class BookModelSerializer(serializers.ModelSerializer):
         #我们必须要关联模型
         model = BookInfo
         # 设置哪些字段可以生成 序列化器字段
-        # fields = '__all__'      # __all__ 表示模型的所有字段
+        fields = '__all__'      # __all__ 表示模型的所有字段
         # fields = ['id','name','pub_date']      # 设置部分字段
 
-        exclude = ['image', 'is_delete']  # 抛出列表所罗列的,剩余的字段
+        # exclude = ['image', 'is_delete']  # 抛出列表所罗列的,剩余的字段
 
         """
         {
@@ -47,19 +47,19 @@ class BookModelSerializer(serializers.ModelSerializer):
 
         """
 
-        # 可以通过read_only_fields指明只读字段，即仅用于序列化输出的字段
-        read_only_fields = ['readcount', 'commentcount']
-
-        # 我们可以使用extra_kwargs参数为ModelSerializer添加或修改原有的选项参数
-        # 修改 默认生成在 字段的选项
-        extra_kwargs = {
-            #  '字段名':{'选项名':值}
-            'pub_date': {'required': True},
-            'readcount': {
-                'max_value': 100,
-                'min_value': 1
-            }
-        }
+        # # 可以通过read_only_fields指明只读字段，即仅用于序列化输出的字段
+        # read_only_fields = ['readcount', 'commentcount']
+        #
+        # # 我们可以使用extra_kwargs参数为ModelSerializer添加或修改原有的选项参数
+        # # 修改 默认生成在 字段的选项
+        # extra_kwargs = {
+        #     #  '字段名':{'选项名':值}
+        #     'pub_date': {'required': True},
+        #     'readcount': {
+        #         'max_value': 100,
+        #         'min_value': 1
+        #     }
+        # }
 
         """
         使用read_only_fields和extra_kwargs方法之后：
