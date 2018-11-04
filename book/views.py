@@ -335,11 +335,11 @@ serializer = BookInfoSerializer(data=data)
 # raise_exception 如果有错误则抛出异常
 serializer.is_valid(raise_exception=True)
 
-#3. 入库
-
+#3. 入库 调用序列化器的 save方法
+serializer.save()
 
 """
-结果如下：
+评论量不能大于阅读量的测试结果如下：
 (django_py3_1.11) python@ubuntu:~/PycharmProjects/Django code/bookmanager04$ python manage.py shell
 Python 3.5.2 (default, Nov 23 2017, 16:37:01)
 [GCC 5.4.0 20160609] on linux
@@ -376,4 +376,21 @@ Traceback (most recent call last):
   File "/home/python/.virtualenvs/django_py3_1.11/lib/python3.5/site-packages/rest_framework/serializers.py", line 244, in is_valid
     raise ValidationError(self.errors)
 rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(string='评论量不能大于阅读量', code='invalid')]}
+"""
+
+"""
+#3. 入库 调用序列化器的 save方法
+
+serializer.save() 入库的时候出现这个错误：
+NotImplementedError: `create()` must be implemented.
+
+原因在于：
+serializer.save() 继承自serializers.Serializer的序列化器，
+在调用save方法的时候，
+需要手动实现create方法。
+
+(其中serializers.Serializer来自这句话
+from book.serializers import BookInfoSerializer,
+BookInfoSerializer的父类便是serializers.Serializer)
+
 """

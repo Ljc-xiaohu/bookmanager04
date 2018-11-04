@@ -47,8 +47,8 @@ class BookInfoSerializer(serializers.Serializer):
         raise serializers.ValidationError('我就是来捣乱的')
 
     id = serializers.IntegerField(read_only=True,label='id')  # label 表示注释
-    name = serializers.CharField(max_length=20,label='名字',required=True,validators=[custom_validate])
-    # name = serializers.CharField(max_length=20,label='名字',required=True)
+    # name = serializers.CharField(max_length=20,label='名字',required=True,validators=[custom_validate])
+    name = serializers.CharField(max_length=20,label='名字',required=True)
     pub_date = serializers.DateField(label='发布日期',required=True)
     # 其中required=True时,不能设置default的值
     readcount = serializers.IntegerField(label='阅读量',required=True)
@@ -94,6 +94,31 @@ class BookInfoSerializer(serializers.Serializer):
 
         #校验完成之后,必须要将数据返回回去
         return data
+
+    def create(self, validated_data):
+        # validated_data 验证之后的数据
+        # params(前端提交的数据) --> data(序列器接受的数据) --> attrs(多个字段校验) --> validated_data(校验之后)
+        # 如果前段提交的数据 经过序列化器的验证之后完全满足需求,则
+        # validated_data =  params
+        """
+
+        validated_data:
+        data = {
+            'name':'python',
+            'pub_date':'2000-1-1',
+            'readcount':10000,
+            'commentcount':100
+        }
+        """
+        # book = BookInfo()
+        # book.save()
+
+        # create(**kwargs),中需要传入一个key，value的字典类型，
+        # 所以需要对validated_data进行解包，便是**validated_data
+        book = BookInfo.objects.create(**validated_data)
+
+        # 需要将创建的对象 返回
+        return book
 
 
 class PeopleInfoSerializer(serializers.Serializer):
