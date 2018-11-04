@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from book.models import BookInfo
+from book.serializers import BookModelSerializer
+
 """
 1.我们学习 DRF框架的视图的基类是 APIVIew
 2. APIView的使用 和View是一样的
@@ -51,3 +54,45 @@ class CenterView(APIView):
         print(data)
 
         return HttpResponse('post')
+
+
+#以书籍列表视图为例 完成我们代码
+class BookListAPIView(APIView):
+
+    #获取所有书籍
+    def get(self,request):
+        """
+        1.获取模型列表
+        2.我们创建序列化器,让序列化器对我们的模型列表转换
+        3.返回响应
+        """
+        # 1.获取模型列表
+        books = BookInfo.objects.all()
+
+        # 2.我们创建序列化器,让序列化器对我们的模型列表转换
+        serializer = BookModelSerializer(books,many=True)
+
+        # 3.返回响应
+        return  Response(serializer.data)
+
+
+    #新增书籍
+    def post(self,request):
+        """
+         # 1.接收数据
+        # 2.校验数据
+        # 3.创建对象，保存到数据库
+        # 4.返回响应
+        """
+        # 1.接收数据
+        data = request.data
+
+        # 2.校验数据,我们用序列化器
+        serializer = BookModelSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        # 3.创建对象，保存到数据库
+        serializer.save()
+
+        # 4.返回响应
+        return Response(serializer.data)
