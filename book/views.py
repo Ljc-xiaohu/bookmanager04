@@ -96,3 +96,76 @@ class BookListAPIView(APIView):
 
         # 4.返回响应
         return Response(serializer.data)
+
+
+#详情视图
+
+
+
+###########################二级视图GenericAPIView##############################################
+from rest_framework.generics import GenericAPIView
+
+"""
+为标准列表和详细信息视图添加了常用的行为。
+
+提供的每个具体通用视图是通过GenericAPIView与一个或多个mixin类组合而构建的
+
+
+1. GenericAPIView 对列表视图和详情视图做了 通用的 支持, 在APIView的基础之上 做了 属性和方法的封装
+
+    属性
+    queryset                用于记录我们列表,详情视图的查询结果集
+    serializer_class        用于列表,详情视图的序列化器
+    lookup_field            用于查询指定的对象的字段名,默认是 pk
+
+    方法
+    get_queryset            用于获取查询的结果(本质是: queryset.all())
+    get_serializer          用于获取序列化器(本质是: serializer_class())
+    get_object              用于获取某一个指定的对象(本质是: 根据 lookup_field的字段的值,进行筛选)
+"""
+
+#书籍列表视图
+class BookListGenericAPIView(GenericAPIView):
+
+    queryset = BookInfo.objects.all()
+
+    serializer_class = BookModelSerializer
+
+    #获取所有的书籍
+    def get(self,request):
+        """
+         1.获取模型列表
+        2.我们创建序列化器,让序列化器对我们的模型列表转换
+        3.返回响应
+        """
+        #  1.获取模型列表
+        # books = self.queryset.all()
+        books = self.get_queryset()
+
+        # 2.我们创建序列化器,让序列化器对我们的模型列表转换
+        # serializer = self.serializer_class(books,many=True)
+        serializer = self.get_serializer(books,many=True)
+
+        # 3.返回响应
+        return Response(serializer.data)
+
+    def post(self,request):
+        """
+        # 1.接收数据
+        # 2.校验数据
+        # 3.创建对象，保存到数据库
+        # 4.返回响应
+        """
+        # 1.接收数据
+        data = request.data
+
+        # 2.校验数据,序列化器
+        # self.get_serializer() = BookSerializer()
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        # 3.创建对象，保存到数据库
+        serializer.save()
+
+        # 4.返回响应
+        return Response(serializer.data)

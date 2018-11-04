@@ -13,8 +13,11 @@ urlpatterns = [
 
     # url(r'^centers/$',views.CenterView.as_view()),
 
+    # # 列表视图
+    # url(r'^books/$',views.BookListAPIView.as_view()),
+
     # 列表视图
-    url(r'^books/$',views.BookListAPIView.as_view()),
+    url(r'^books/$',views.BookListGenericAPIView.as_view()),
 ]
 
 # from rest_framework.routers import DefaultRouter
