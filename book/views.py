@@ -26,6 +26,16 @@ class BookModelViewSet(ModelViewSet):
     # http://127.0.0.1:8000/admin/book/bookinfo/?name=python
 
 
+    from rest_framework.filters import OrderingFilter
+    #设置过滤的后台为 排序
+    filter_backends = [OrderingFilter]
+    # 排序的字段列表
+    ordering_fileds = ['id','readcount','commentcount']
+
+    # http://127.0.0.1:8000/books/?ordering=readcount   # 默认为升序
+    #  http://127.0.0.1:8000/books/?ordering=-readcount   # 加一个 - 表示降序
+
+
 
 # CenterAPIView 我想用于测试, BasicAuthentication
 # 可以对这个视图 采用单独的认证方案
