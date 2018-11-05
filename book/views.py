@@ -169,3 +169,70 @@ class BookListGenericAPIView(GenericAPIView):
 
         # 4.返回响应
         return Response(serializer.data)
+
+
+# 书籍详情视图
+class BookDetailGeneicAPIView(GenericAPIView):
+
+    queryset = BookInfo.objects.all()
+
+    serializer_class = BookModelSerializer
+
+    #设置 查询的字段,默认 lookup_field = pk
+    lookup_field = 'id'
+
+
+    def get(self,request,id):
+        """
+        # 1.根据id获取对象
+        #2.创建序列化器
+        # 3.返回响应
+        """
+        # 1.根据id获取对象
+        book = self.get_object()
+
+        #2.创建序列化器
+        serializer = self.get_serializer(book)
+
+        # 3.返回响应
+        return Response(serializer.data)
+
+
+    def put(self,request,id):
+        """
+        1.根据id获取对象
+        2.接收参数
+        3.校验参数
+        4.更新操作
+        5.返回响应
+        """
+        #  1.根据id获取对象
+        book = self.get_object()
+
+        # 2.接收参数
+        # 3.校验参数  --序列化器
+        serializer = self.get_serializer(instance=book,data=request.data)
+        serializer.is_valid()
+
+        # 4.更新操作
+        serializer.save()
+
+        # 5.返回响应
+        return  Response(serializer.data)
+
+
+    def delete(self,request,id):
+        """
+        1.根据id查询对象
+        2.删除
+        3.返回响应
+        """
+        # 1.根据id查询对象
+        book = self.get_object()
+
+        # 2.删除
+        book.delete()
+
+        # 3.返回响应
+        from rest_framework import status
+        return Response(status=status.HTTP_204_NO_CONTENT)

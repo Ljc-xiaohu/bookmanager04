@@ -17,7 +17,10 @@ urlpatterns = [
     # url(r'^books/$',views.BookListAPIView.as_view()),
 
     # 列表视图
-    url(r'^books/$',views.BookListGenericAPIView.as_view()),
+    # url(r'^books/$',views.BookListGenericAPIView.as_view()),
+
+    # 详情视图
+    url(r'^books/(?P<id>\d+)/$',views.BookDetailGeneicAPIView.as_view()),
 ]
 
 # from rest_framework.routers import DefaultRouter
