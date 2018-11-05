@@ -256,3 +256,36 @@ class BookListGenericMixinView(ListModelMixin,CreateModelMixin,GenericAPIView):
     def post(self,requset):
 
         return self.create(requset)
+
+
+#详情视图
+from rest_framework.mixins import RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
+
+class BookDetailGenericMixinView(RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin,GenericAPIView):
+
+    queryset = BookInfo.objects.all()
+
+    serializer_class = BookModelSerializer
+
+    def get(self,request,pk):
+
+        return self.retrieve(request)
+
+    def put(self,request,pk):
+
+        return self.update(request)
+
+    def delete(self,request,pk):
+
+        return self.destroy(request)
+
+
+###########################三级视图##############################################
+
+from rest_framework.generics import CreateAPIView
+
+class BookCreateAPIView(CreateAPIView):
+
+    queryset = BookInfo.objects.all()
+
+    serializer_class = BookModelSerializer
