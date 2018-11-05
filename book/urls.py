@@ -58,8 +58,8 @@ router = SimpleRouter()
 # abc/
 # abc/pk/
 #参数2: 视图集
-#参数3: 视图函数名的前缀:  列表视图的名字是:  base_name -list
-#                       详情视图的名字是:  base_name -detail
+#参数3: 视图函数名的前缀:  列表视图的名字是:  base_name -list  ,其中-list，系统默认
+#                       详情视图的名字是:  base_name -detail  ，其中-detail，系统默认
 router.register(r'books',views.BookModelViewSet,base_name='')
 
 #3. router会自动生成url,生成的url在 router.urls属性中

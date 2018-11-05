@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from rest_framework import status
 
 from book.models import BookInfo
 from book.serializers import BookModelSerializer
@@ -343,7 +344,7 @@ class BookViewSet(ViewSet):
         return Response(serializer.data)
 
 
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
 
 class BookModelViewSet(ModelViewSet):
 
@@ -351,3 +352,40 @@ class BookModelViewSet(ModelViewSet):
     queryset = BookInfo.objects.all()
 
     serializer_class = BookModelSerializer
+
+    # 给视图集额外添加方法是可以的
+    # 根据阅读量排序获取书籍信息
+    from rest_framework.decorators import action
+    #methods=None, detail=None
+
+    #methods=None   允许使用哪个http来访问我们的方法
+    # detail=None   布尔值
+    #       如果detail的值为True,则表示 这个url是详情视图的url,生成的url语法为:  /books/pk/函数名/
+    #       如果detail的值为False,则表示 这个url是列表视图的url,生成的url语法为:  /books/函数名/
+    @action(methods=['get'],detail=False)
+    def order_book(self,request):
+        books = BookInfo.objects.all().order_by('readcount')
+        serializer = BookModelSerializer(books, many=True)
+        return Response(serializer.data)
+
+    # 只是修改某一本书籍的名字
+    # detail为True表示单个实例，网址为这种形式：^books/{pk}/set_bookname/$
+    @action(methods=['post'], detail=True)
+    def set_bookname(self, request, pk=None):
+        book = self.get_object()
+        serializer = BookModelSerializer(data=request.data)
+        if serializer.is_valid():
+            book.name = request.data['name']
+            book.save()
+            return Response({'message': '重置成功'})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
+class BookOrderListAPIView(APIView):
+
+    def get(self,request):
+        books = BookInfo.objects.all().order_by('readcount')
+        serializer = BookModelSerializer(books,many=True)
+        return Response(serializer.data)
