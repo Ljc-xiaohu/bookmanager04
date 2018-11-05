@@ -129,3 +129,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# 我们在settings中进行配置,所以的视图都采用这个设置
+REST_FRAMEWORK = {
+
+    #认证的设置
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # BasicAuthentication
+        #此身份验证方案使用HTTP基本身份验证，
+        # 根据用户的用户名和密码进行签名。
+        # 基本身份验证通常仅适用于测试
+        # 'rest_framework.authentication.BasicAuthentication',
+
+        #SessionAuthentication  session认证
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+
+    # #权限
+
+    # IsAuthenticated 所有的视图 必须通过认证 (session认证)
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
