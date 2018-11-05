@@ -282,10 +282,32 @@ class BookDetailGenericMixinView(RetrieveModelMixin,UpdateModelMixin,DestroyMode
 
 ###########################三级视图##############################################
 
+"""
+
+queryset
+- 应该用于从此视图返回对象的查询集。通常，您必须设置此属性，或覆盖该get_queryset()方法。
+如果要覆盖视图方法，则必须调用get_queryset()而不是直接访问此属性，因为queryset将进行一次评估，
+并且将为所有后续请求缓存这些结果。
+
+serializer_class
+- 应该用于验证和反序列化输入以及序列化输出的序列化程序类。通常，您必须设置此属性，
+或覆盖该get_serializer_class()方法。
+
+"""
+
+
 from rest_framework.generics import CreateAPIView
 
 class BookCreateAPIView(CreateAPIView):
 
-    queryset = BookInfo.objects.all()
+    # queryset = BookInfo.objects.all()
 
-    serializer_class = BookModelSerializer
+    def get_queryset(self):
+
+        return BookInfo.objects.all()
+
+    # serializer_class = BookModelSerializer
+
+    def get_serializer_class(self):
+
+        return BookModelSerializer
