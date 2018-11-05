@@ -18,6 +18,8 @@ class BookModelViewSet(ModelViewSet):
     from rest_framework.permissions import AllowAny,IsAdminUser,IsAuthenticated,IsAuthenticatedOrReadOnly
     permission_classes = [AllowAny]
 
+    # throttle_scope = 'contacts'  # 限制用户对于每个视图的访问频次
+
 
 
 

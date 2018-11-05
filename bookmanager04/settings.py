@@ -153,13 +153,33 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),   #不同的设置中间记得加,  逗号
 
-    # 限流
-    'DEFAULT_THROTTLE_CLASSES': (
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ),
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '3/day',
-        'user': '10/day'
-    }
+
+    # 可选限流类
+    # 1） AnonRateThrottle限制所有匿名未认证用户，使用IP区分用户。
+    # 使用DEFAULT_THROTTLE_RATES['anon']来设置频次
+
+    # 2）UserRateThrottle限制认证用户，使用User id 来区分。
+    # 使用DEFAULT_THROTTLE_RATES['user']来这是频次
+
+    # 3）ScopedRateThrottle限制用户对于每个视图的访问频次，使用ip或user id。
+
+    # # 限流
+    # 'DEFAULT_THROTTLE_CLASSES': (
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ),
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon': '3/day',
+    #     'user': '10/day'
+    # }
+
+
+    # 'DEFAULT_THROTTLE_CLASSES': (
+    #     'rest_framework.throttling.ScopedRateThrottle',
+    # ),
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'contacts': '3/day',
+    #     'uploads': '20/day'
+    # }
+
 }
