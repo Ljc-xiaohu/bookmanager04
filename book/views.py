@@ -236,3 +236,23 @@ class BookDetailGeneicAPIView(GenericAPIView):
         # 3.返回响应
         from rest_framework import status
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+###########################二级视图GenericAPIView 一般和 MiXin配合使用##############################################
+
+from rest_framework.mixins import ListModelMixin,CreateModelMixin
+
+#列表视图
+class BookListGenericMixinView(ListModelMixin,CreateModelMixin,GenericAPIView):
+
+    queryset = BookInfo.objects.all()
+
+    serializer_class = BookModelSerializer
+
+    def get(self,request):
+
+        return self.list(request)
+
+    def post(self,requset):
+
+        return self.create(requset)
