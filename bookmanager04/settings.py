@@ -151,5 +151,15 @@ REST_FRAMEWORK = {
     # IsAuthenticated 所有的视图 必须通过认证 (session认证)
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),   #不同的设置中间记得加,  逗号
+
+    # 限流
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '3/day',
+        'user': '10/day'
+    }
 }
