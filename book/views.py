@@ -311,3 +311,33 @@ class BookCreateAPIView(CreateAPIView):
     def get_serializer_class(self):
 
         return BookModelSerializer
+
+
+###########################视图集##############################################
+
+"""
+
+Django REST框架允许将一组相关视图的逻辑组合到一个类中，称为  视图集
+# 我们需要将 列表视图和详情视图 合并到一个 视图集(View)中
+# 但是 一个View只能有一个 get方法, 那 视图集
+
+视图集的 爷爷类 是一个 View
+
+"""
+
+from rest_framework.viewsets import ViewSet
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+
+class BookViewSet(ViewSet):
+
+    def list(self,request):                 #GET
+        queryset = BookInfo.objects.all()
+        serializer = BookModelSerializer(queryset,many=True)
+        return Response(serializer.data)
+
+    def retrieve(self,request,pk=None):     #GET
+        queryset = BookInfo.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        serializer = BookModelSerializer(user)
+        return Response(serializer.data)
