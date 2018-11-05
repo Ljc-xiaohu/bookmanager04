@@ -341,3 +341,13 @@ class BookViewSet(ViewSet):
         user = get_object_or_404(queryset, pk=pk)
         serializer = BookModelSerializer(user)
         return Response(serializer.data)
+
+
+from rest_framework.viewsets import ModelViewSet
+
+class BookModelViewSet(ModelViewSet):
+
+    # ModelViewSet 父类是 GenericAPIView
+    queryset = BookInfo.objects.all()
+
+    serializer_class = BookModelSerializer
