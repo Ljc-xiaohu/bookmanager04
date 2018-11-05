@@ -8,6 +8,18 @@ from book.serializers import BookModelSerializer
 
 """
 
+
+from rest_framework.pagination import PageNumberPagination
+class CustomNumberPagination(PageNumberPagination):
+    #我们需要设置一个默认值 来开启分页
+    page_size = 10
+
+    # 我们需要设置一个 查询的key 来开启 每页多少条
+    page_size_query_param = 'page_size'
+
+    page_query_param = 'pn'   #前端url中的 key ,默认是 page
+
+
 # BookModelViewSet 所有人都可以访问
 class BookModelViewSet(ModelViewSet):
     # ModelViewSet 父类是 GenericAPIView
@@ -42,7 +54,10 @@ class BookModelViewSet(ModelViewSet):
     # 分页有2个分页类
     from rest_framework.pagination import LimitOffsetPagination,PageNumberPagination
 
-    pagination_class = LimitOffsetPagination
+    # 也可通过自定义Pagination类，来为视图添加不同分页行为。在视图中通过pagination_clas属性来指明
+    # pagination_class = LimitOffsetPagination
+
+    pagination_class = CustomNumberPagination
 
 """
 class LimitOffsetPagination(BasePagination): (其中部分源码，可以自己查看)
