@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book.apps.BookConfig',
     'rest_framework',  # 使用DRF（Django REST framework,全称djangorestful-framework）必须注册
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -182,4 +183,6 @@ REST_FRAMEWORK = {
     #     'uploads': '20/day'
     # }
 
+    # 过滤设置
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }

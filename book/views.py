@@ -20,6 +20,10 @@ class BookModelViewSet(ModelViewSet):
 
     # throttle_scope = 'contacts'  # 限制用户对于每个视图的访问频次
 
+    # 过滤
+    filter_fields = ['name','id','readcount']
+
+    # http://127.0.0.1:8000/admin/book/bookinfo/?name=python
 
 
 
