@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.views import  APIView
+from rest_framework.views import APIView
 from book.models import BookInfo
 from book.serializers import BookModelSerializer
 
@@ -35,6 +35,24 @@ class BookModelViewSet(ModelViewSet):
     # http://127.0.0.1:8000/books/?ordering=readcount   # 默认为升序
     #  http://127.0.0.1:8000/books/?ordering=-readcount   # 加一个 - 表示降序
 
+
+    # 分页的第一点:  GenericAPIView及其子类有分页功能 ,APIView没有分页功能
+    from rest_framework.generics import GenericAPIView
+
+    # 分页有2个分页类
+    from rest_framework.pagination import LimitOffsetPagination,PageNumberPagination
+
+    pagination_class = LimitOffsetPagination
+
+"""
+class LimitOffsetPagination(BasePagination): (其中部分源码，可以自己查看)
+
+    default_limit = api_settings.PAGE_SIZE
+    limit_query_param = 'limit'     # 表示：  每页限制数量
+    limit_query_description = _('Number of results to return per page.')
+    offset_query_param = 'offset'   # 表示：  初始索引
+    offset_query_description = _('The initial index from which to return the results.')
+"""
 
 
 # CenterAPIView 我想用于测试, BasicAuthentication
