@@ -23,7 +23,15 @@ class CustomNumberPagination(PageNumberPagination):
 # BookModelViewSet 所有人都可以访问
 class BookModelViewSet(ModelViewSet):
     # ModelViewSet 父类是 GenericAPIView
-    queryset = BookInfo.objects.all()
+    # queryset = BookInfo.objects.all()
+
+    # 手动触发异常
+    def get_queryset(self):
+
+        from django.db import DatabaseError
+        raise DatabaseError('error')
+
+        return BookInfo.objects.all()
 
     serializer_class = BookModelSerializer
 
