@@ -74,6 +74,17 @@ class BookModelSerializer(serializers.ModelSerializer):
 
         """
 
+        """
+        两点说明：
+        1） 视图集ViewSet中的retrieve名称， 在接口文档网站中叫做read
+        2）参数的Description需要在模型类或序列化器类的字段中以help_text选项定义，如：
+        """
+
+        extra_kwargs = {
+            'readcount': {
+                'help_text': '阅读量'
+            }
+        }
 
 # DRF魅力的时候 我们所做的
 #   将对象(模型)转换为字典,JSON ,

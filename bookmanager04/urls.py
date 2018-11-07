@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^', include('book.urls'))
+    url(r'^', include('book.urls')),
+
+    # 设置接口文档访问路径，其中 docs，美多商城API，都可以自己定义
+    url(r'^docs/',include_docs_urls(title='美多商城API')),
 ]
